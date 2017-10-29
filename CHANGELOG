@@ -1,0 +1,13 @@
+10/29/17
+ * Added several scripts I ported from my cloudbot version and a few others which I only run on my discord branch.
+ * agdq.py - AGDQ/SGDQ scheduling/searching/etc
+ * bitcoin.py - Grabs current/high/low for 24h period for bitcoin
+ * EveStatusCREST.py - Poll how many players are playing noted Bad Game EVE Online
+ * figlet.py - Requires library pyfiglet -- works just like using figlet from the command line
+ * fml.py - Scrapes the fml random page and spits out one of them.
+ * runescape.py - Scrapes runescape's "API" (if you call it that) for the current players online.
+ * seen.py - Probably superfluous given how discord works but check when a user last spoke and what they said. Will probably upgrade to use bare names instead of just the ID.
+ * SpaceLaunch.py - Polls for the next upcoming spacelaunch for the public API at launchlibrary.net
+ * tag.py - Add tags/recall tags for words.
+ * tfw.py - Scrapes channels for tfw and stores them to be recalled.
+ * warframe.py - Can be set to give out key alerts into channels and also users can PM the bot to get the alerts directly.

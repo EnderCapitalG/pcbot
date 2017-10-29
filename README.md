@@ -6,17 +6,6 @@ WIP discord bot using [discord.py].
 
 **PCBOT is only supported by python version 3.5.0 and newer.**
 
-## BotéMon
-**For those who have arrived from BotéMon and wish to contribute/have 
-a look/access the resources**, the libraries used are found in 
-`plugins/pokedex.py` and `plugins/pokedexlib/`!
-
-Currently, BotéMon is the only version of PCBOT I host for public use. 
-**If you wish to add the bot to your server, check 
-[its bots.discord.pw entry!][botemon]**
-
-[botemon]: https://bots.discord.pw/bots/203868728884985857
-
 ## Installing
 Before installing the bot, you must make sure you're running python 
 3.5.0+
@@ -58,6 +47,7 @@ errors when modules are missing, although modules as of now are:
 | oppai     | Not a python module; see doc in [`plugins/osu.py`]        |
 | ffmpeg    | Not a python module; see doc in [`plugins/music.py`]      |
 | imageio   | `pip install imageio`, support gif in [`plugins/image.py`]|
+| pyfiglet  | For use with figlet.py                                    |
 
 [zip]: https://github.com/PcBoy111/PCBOT/archive/master.zip
 [`plugins/osu.py`]: https://github.com/PcBoy111/PCBOT/blob/master/plugins/osu.py
