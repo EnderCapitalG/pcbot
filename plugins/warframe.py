@@ -28,8 +28,12 @@ def check_alert(check):
 async def get_data():
 	global title, alert_type, desc, starttime, endtime, faction, lastUpdate
 	global header
+        
+        try:
+        	req = requests.get("http://content.warframe.com/dynamic/rss.php", headers=header)
+        except ConnectionError:
+                return
 
-	req = requests.get("http://content.warframe.com/dynamic/rss.php", headers=header)
 	html = lxml.html.fromstring(req.content)
 
 	title = html.xpath("//item/title/text()")
