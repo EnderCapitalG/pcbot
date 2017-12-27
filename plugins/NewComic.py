@@ -175,7 +175,6 @@ def make_comic(nicks, panels):
 	imageWidth = panelWidth
 	imageHeight = panelHeight * len(panels)
 
-#	background = Image.open(background_file)
 	background = Image.open(os.path.join('backgrounds', random.choice(os.listdir('backgrounds'))))
 
 	temp = Image.new("RGBA", (imageWidth, imageHeight), (0xff, 0xff, 0xff, 0xff))
