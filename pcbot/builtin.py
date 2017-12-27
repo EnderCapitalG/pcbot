@@ -198,8 +198,8 @@ async def plugin_(message: discord.Message):
     await client.say(message, "**Plugins:** ```{}```".format(", ".join(plugins.all_keys())))
 
 
-@plugin_.command(aliases="r", pos_check=False, owner=True)
-async def reload(message: discord.Message, *names: str.lower):
+@plugins.command(aliases="r", pos_check=False, owner=True)
+async def reload(message: discord.Message, *names: str):
     """ Reloads all plugins or the specified plugin. """
     if names:
         reloaded = []
@@ -226,8 +226,8 @@ async def reload(message: discord.Message, *names: str.lower):
         await client.say(message, "All plugins reloaded.")
 
 
-@plugin_.command(owner=True, error="You need to specify the name of the plugin to load.")
-async def load(message: discord.Message, name: str.lower):
+@plugins.command(owner=True, error="You need to specify the name of the plugin to load.")
+async def load(message: discord.Message, name: str):
     """ Loads a plugin. """
     assert not plugins.get_plugin(name), "Plugin `{}` is already loaded.".format(name)
 
@@ -238,8 +238,8 @@ async def load(message: discord.Message, name: str.lower):
     await client.say(message, "Plugin `{}` loaded.".format(name))
 
 
-@plugin_.command(owner=True, error="You need to specify the name of the plugin to unload.")
-async def unload(message: discord.Message, name: str.lower):
+@plugins.command(owner=True, error="You need to specify the name of the plugin to unload.")
+async def unload(message: discord.Message, name: str):
     """ Unloads a plugin. """
     assert plugins.get_plugin(name), "`{}` is not a loaded plugin.".format(name)
 
