@@ -184,7 +184,7 @@ async def Message_Channel_News():
 		date = arrow.get(newsDate[i])
 		date = date.to('US/Eastern')
 		if (now - date).seconds < 60:
-			mes = "```New Warframe News posted at " + date + ":```\n Title: `" + newsTitle[i] + "` -- URL: " + newsURL[i]
+			mes = "```New Warframe News posted at " + date.format('YYYY-MM-DD HH:mm:ss') + ":```\n Title: `" + newsTitle[i] + "` -- URL: " + newsURL[i]
 			for item in mesObj:
 				await client.say(item, mes)
 
