@@ -24,15 +24,12 @@ python -m pip install discord.py --update
 To install the bot, one can clone the repo:
 
 ```
-git clone https://github.com/PcBoy111/PCBOT.git
+git clone https://github.com/EnderCapitalG/PCBOT.git
 ```
 
 This is the best way to install as the bot is actively in development. 
 If you want to update the bot using git, run `git pull` and either 
 restart the bot or reload the updated plugins.
-
-If you do not care about updates, you can 
-[download the repo as ZIP][zip].
 
 Several plugins require additional modules. These modules are not 
 required unless you want a specific plugin to work. Some features and 
@@ -48,11 +45,6 @@ errors when modules are missing, although modules as of now are:
 | ffmpeg    | Not a python module; see doc in [`plugins/music.py`]      |
 | imageio   | `pip install imageio`, support gif in [`plugins/image.py`]|
 | pyfiglet  | For use with figlet.py                                    |
-
-[zip]: https://github.com/PcBoy111/PCBOT/archive/master.zip
-[`plugins/osu.py`]: https://github.com/PcBoy111/PCBOT/blob/master/plugins/osu.py
-[`plugins/music.py`]: https://github.com/PcBoy111/PCBOT/blob/master/plugins/music.py
-[`plugins/image.py`]: https://github.com/PcBoy111/PCBOT/blob/master/plugins/image.py
 
 ## Running
 Running the bot is simple. Go to the root directory 
@@ -130,7 +122,7 @@ the bot using git.
 The owner can manage plugins with the `!plugin` command. See
 `!help plugin` for more information.
 
-[`pcbot/builtin.py`]: https://github.com/PcBoy111/PCBOT/blob/master/pcbot/builtin.py
+[`pcbot/builtin.py`]: https://github.com/EnderCapitalG/PCBOT/blob/master/pcbot/builtin.py
 
 [discord.py]: https://github.com/Rapptz/discord.py
 

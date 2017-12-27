@@ -1,5 +1,6 @@
 import discord
 import plugins
+from pcbot import utils
 client = plugins.client
 
 import requests
@@ -15,6 +16,8 @@ logging.getLogger("requests").setLevel(logging.WARNING)
 header = { 'User-Agent' : 'Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/48.0.2564.97 Safari/537.36' }
 
 title = alert_type = desc = starttime = endtime = faction = lastUpdate = 0
+acolyte = health = disclocation = disctime = discov = []
+newsTitle = newsURL = newsDate = []
 mesObj = []
 alert_types = ['Kavat', 'Catalyst', "Reactor", 'Vauban', 'Lotus', 'Forma', 'Nitain', 'Corrosive', 'Syphon']
 
@@ -28,11 +31,12 @@ def check_alert(check):
 async def get_data():
 	global title, alert_type, desc, starttime, endtime, faction, lastUpdate
 	global header
-        
-        try:
-        	req = requests.get("http://content.warframe.com/dynamic/rss.php", headers=header)
-        except ConnectionError:
-                return
+
+	try:
+		req = requests.get("http://content.warframe.com/dynamic/rss.php", headers=header)
+	except ConnectionError:
+		print("If you see this then the connetion error killed the bot because programming is fucking hard")
+		return
 
 	html = lxml.html.fromstring(req.content)
 
@@ -43,6 +47,39 @@ async def get_data():
 	endtime = html.xpath("//item/*[local-name()='expiry']/text()")
 	faction = html.xpath("//item/*[local-name()='faction']/text()")
 
+async def get_news():
+	global header
+	global newsTitle, newsURL, newsDate
+
+	newsTitle = []
+	newsURL = []
+	newsDate = []
+
+	try:
+		req = requests.get("http://content.warframe.com/dynamic/worldState.php", headers=header).json()
+	except ConnectionError:
+		return
+
+	for item in req['Events']:
+		if item['Messages'][0]['LanguageCode'] in 'en':
+			newsTitle.append(item['Messages'][0]['Message'])
+			newsURL.append(item['Prop'])
+			newsDate.append(int(item['Date']['$date']['$numberLong'])/1000)
+			
+
+@plugins.command(name="warframenews", aliases="wfn wfnews")
+async def all_news(message: discord.Message):
+	global newsTitle, newsURL, newsDate
+	first = await client.say(message, "Parsing...")
+	newslist = []
+	i = -1
+	for item in newsTitle:
+		i += 1
+		mes = "\nTitle: `" + newsTitle[i] + "` -- URL: " + "<" + newsURL[i] + ">"
+		newslist.append(mes)
+
+	string = ''.join(newslist)
+	await client.edit_message(first, string)
 
 @plugins.command(name="setwfchan", owner="true")
 async def setwfchan(message: discord.Message):
@@ -102,6 +139,8 @@ async def wfchanlist(message: discord.Message):
 async def WFAlerts(message: discord.Message):
 	global mesObj, title, alert_type, desc, starttime, endtime, faction
 	it = -1
+	wfalerts = []
+	first = await client.say(message, "Parsing")
 	for item in endtime:
 		it += 1
 		start = arrow.get(starttime[it], 'ddd, DD MMM YYYY HH:mm:ss ZZ')
@@ -111,9 +150,12 @@ async def WFAlerts(message: discord.Message):
 
 		efaction = faction[it][3:]
 		mes = "```c\n" + efaction + " " + alert_type[it] + ": `" + title[it] + "` " + desc[it] + " `Starting at: " + start.format('YYYY-MM-DD HH:mm:ss') + " Eastern - Ending at: " + end.format('YYYY-MM-DD HH:mm:ss') + " Eastern```"
-		await client.say(message, mes)
+#		await client.say(message, mes)
+		wfalerts.append(mes)
+	string = ''.join(wfalerts)
+	await client.edit_message(first, string)
 
-async def Message_Channel():
+async def Message_Channel_Alerts():
 	global mesObj, title, alert_type, desc, starttime, endtime, faction, alert_types
 	it = -1
 	now = arrow.utcnow()
@@ -133,10 +175,25 @@ async def Message_Channel():
 				for item in mesObj:
 					await client.say(item, mes)
 
+async def Message_Channel_News():
+	global newsTitle, newsURL, newsDate, mesObj
+	i = -1
+	now = arrow.utcnow()
+	for item in newsTitle:
+		i += 1
+		date = arrow.get(newsDate[i])
+		date = date.to('US/Eastern')
+		if (now - date).seconds < 60:
+			mes = "```cNew Warframe News:```\n Title: `" + newsTitle[i] + "` -- URL: " + newsURL[i]
+			for item in mesObj:
+				await client.say(item, mes)
+
 async def mainloop():
 	while(1):
 		await get_data()
-		await Message_Channel()
+		await get_news()
+		await Message_Channel_Alerts()
+		await Message_Channel_News()
 		await asyncio.sleep(60)
 
 def start():
