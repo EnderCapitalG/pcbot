@@ -2,8 +2,10 @@
 
 import discord
 import plugins
+from pcbot import utils
 client = plugins.client
 
+import emoji
 import os
 from random import shuffle
 from PIL import Image, ImageDraw, ImageFont
@@ -16,12 +18,11 @@ import random
 
 mcache = dict()
 
-api_key = ""
 font_file = "fonts/ComicBD.ttf"
+emoji_font_file = "fonts/Symbola_hint.ttf"
 font_size = 14
 buffer_size = 30
 
-#@hook.event([EventType.message, EventType.action], ignorebots=False, singlethread=True)
 @plugins.event()
 async def on_message(message: discord.Message):
 	if str(message.clean_content).startswith(".") is False and str(message.clean_content).startswith("!") is False:
@@ -83,19 +84,11 @@ async def comic(message: discord.Message):
 	print(repr(nicks))
 	print(repr(panels))
 
-	image_comic = BytesIO()
 
-	make_comic(nicks, panels).save(image_comic, format="JPEG", quality=85)
+	image_comic = make_comic(nicks, panels)
 
-	headers = {'Authorization': 'Client-ID ' + api_key}
-	base64img = base64.b64encode(image_comic.getvalue())
-	url = "https://api.imgur.com/3/upload.json"
-	request = requests.post(url, data={'key': api_key, 'image': base64img, 'title': 'Comic'}, headers=headers, verify=False)
-	value = json.loads(request.text)
-	try:
-		await client.say(message, value['data']['link'])
-	except KeyError:
-		await client.say(message, value['data']['error'])
+	image_comic = utils.convert_image_object(image_comic)
+	await client.send_file(message.channel, image_comic, filename="comic.png")
 
 def wrap(string, font, draw, panelwidth):
 	string = string.split()
@@ -126,9 +119,19 @@ def wrap(string, font, draw, panelwidth):
 
 	return temp, (messageWidth, messageHeight)
 
+def char_is_emoji(character):
+	return character in emoji.UNICODE_EMOJI
+
 def rendertext(string, font, draw, position):
+	global font_file, emoji_font_file, font_size
+	normal_font = ImageFont.truetype(font_file, font_size)
+	emoji_font = ImageFont.truetype(emoji_font_file, 20)
 	charHeight = position[1]
 	for char in string:
+		if char_is_emoji(char):
+			font = emoji_font
+		else:
+			font = normal_font
 		width, height = draw.textsize(char, font=font)
 
 		#test dropshadows
