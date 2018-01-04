@@ -3,7 +3,6 @@
 
 import discord
 import plugins
-from pcbot import command_prefix, Annotate, Config, permission
 import requests
 
 client = plugins.client
@@ -17,11 +16,7 @@ schedule = []
 current_game = ''
 epoch = 0
 
-oauth_token = "56dba7xa18ke0wssnwdiqseuuxn6xs"
-
-@plugins.command(aliases="test")
-async def test_(message: discord.Message):
-	pass
+oauth_token = ""
 
 @plugins.command(aliases="agdq sgdq gdq")
 async def agdq_(message: discord.Message):
@@ -51,6 +46,8 @@ def parse_agdq_schedule():
 		except arrow.parser.ParserError:
 			continue
 		game = element.getchildren()[1].text
+#		runners = element.getchilden()[2].text
+#		gs.append([gtime, game, runners])
 		gs.append([gtime, game])
 
 	schedule = gs
@@ -98,7 +95,7 @@ async def sched(message: discord.Message):
 
 @plugins.command(name="donations")
 async def agdq_donation(message: discord.Message):
-	h_t = requests.get("https://gamesdonequick.com/tracker/19").text
+	h_t = requests.get("https://gamesdonequick.com/tracker/22").text
 	html = lxml.html.fromstring(h_t)
 	donation = html.xpath("//small")
 	await client.say("Games Done Quick" + donation[0].text.replace('\n', ' ').replace('\r', ' ').replace('\u2014', '-'))

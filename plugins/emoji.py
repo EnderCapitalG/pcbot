@@ -146,7 +146,7 @@ async def format_emoji(text: str, server: discord.Server):
     return [e if isinstance(e, Image.Image) else get_emoji(e, size=size) for e in parsed_emoji], has_custom
 
 
-@plugins.command(aliases="huge")
+@plugins.command(aliases="huge yuge")
 async def greater(message: discord.Message, text: Annotate.CleanContent):
     """ Gives a **huge** version of emojies. """
     # Parse all unicode and load the emojies

@@ -50,7 +50,7 @@ async def comic(message: discord.Message):
 		stackpointer += 1
 		previous = messages[msg][0] - messages[msg-1][0]
 		nicks.add(messages[msg][1])
-		if stackpointer > 10 or previous.total_seconds() > 240 or len(nicks) > 8:
+		if stackpointer > 10 or previous.total_seconds() > 1800 or len(nicks) > 8:
 			break
 
 	#fixes first line disappearing when it shouldn't

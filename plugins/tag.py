@@ -133,8 +133,6 @@ async def remTag(message: discord.Message, text: Annotate.CleanContent):
 		return
 	await client.say(message, "Tag doesn't exist.")
 
-#@hook.regex(r'\?(.*)$')
-#def regTag(message: discord.Message):
 @plugins.event()
 async def on_message(message: discord.Message):
 	if not message.content.startswith("?"):
@@ -150,7 +148,6 @@ async def on_message(message: discord.Message):
 	temp = "Tags for " + tag + ": " + retv
 	await client.say(message, temp)
 
-#@hook.command('droptagDB', permissions=["botcontrol"])
 def dropTagDB():
 	global tagdb
 	db = sqlite3.connect(tagdb)
