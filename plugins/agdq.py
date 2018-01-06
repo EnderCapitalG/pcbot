@@ -27,7 +27,7 @@ async def agdq_(message: discord.Message):
 		await client.say(message, "Stream is OFFLINE.")
 
 	stream = "Twitch Streamer: gamesdonequick" + " -=- Status: Online -=- Game: " + obj['stream']['game'] + " -=- Title: " + obj['stream']['channel']['status'] + " -=- Viewers: " + str(obj['stream']['viewers'])
-	await client.say(message, "{} Watch LIVE: http://www.twitch.tv/gamesdonequick".format(stream))
+	await client.say(message, "{} Watch LIVE: <http://www.twitch.tv/gamesdonequick>".format(stream))
 
 def parse_agdq_schedule():
 	global schedule, current_game, oauth_token
@@ -53,7 +53,7 @@ def parse_agdq_schedule():
 	schedule = gs
 	print("Updating AGDQ schedule. ")
 
-@plugins.command(name="upnext", aliases="schedule")
+@plugins.command(name="upnext", aliases="schedule sched")
 async def sched(message: discord.Message):
 	global oauth_token
 	global schedule, current_game, epoch
@@ -98,4 +98,4 @@ async def agdq_donation(message: discord.Message):
 	h_t = requests.get("https://gamesdonequick.com/tracker/22").text
 	html = lxml.html.fromstring(h_t)
 	donation = html.xpath("//small")
-	await client.say("Games Done Quick" + donation[0].text.replace('\n', ' ').replace('\r', ' ').replace('\u2014', '-'))
+	await client.say(message, "```c\nGames Done Quick" + donation[0].text.replace('\n', ' ').replace('\r', ' ').replace('\u2014', '-') + "```")

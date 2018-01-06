@@ -34,8 +34,9 @@ async def get_data():
 
 	try:
 		req = requests.get("http://content.warframe.com/dynamic/rss.php", headers=header)
-	except ConnectionError:
-		print("If you see this then the connetion error killed the bot because programming is fucking hard")
+	except requests.exceptions.RequestException as e:
+		#correct way to handle this, apparently, thank you google
+		print(e)
 		return
 
 	html = lxml.html.fromstring(req.content)
@@ -57,7 +58,8 @@ async def get_news():
 
 	try:
 		req = requests.get("http://content.warframe.com/dynamic/worldState.php", headers=header).json()
-	except ConnectionError:
+	except requests.exceptions.RequestException as e:
+		print(e)
 		return
 
 	for item in req['Events']:
@@ -168,7 +170,7 @@ async def Message_Channel_Alerts():
 		start = start.to('US/Eastern')
 		end = end.to('US/Eastern')
 		efaction = faction[it][3:]
-	#	if 'Nitain' in title[it] or 'Catalyst' in title[it] or 'Reactor' in title[it] or 'Kavat' in title[it] or 'Lotus' in title[it] or 'Vauban' in title[it]:
+		
 		if check_alert(title[it]):
 			if (now - start).seconds < 60:
 				mes = "```c\nNew " + efaction + " " + alert_type[it] + ": `" + title[it] + "` " + desc[it] + " `Starting at: " + start.format('YYYY-MM-DD HH:mm:ss') + " Eastern - Ending at: " + end.format('YYYY-MM-DD HH:mm:ss') + " Eastern```"
