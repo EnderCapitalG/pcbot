@@ -206,9 +206,10 @@ def start():
 		with open(ifile, 'rb') as input:
 			mesObj.append(pickle.load(input))
 			mesObj = mesObj[0]
+		input.close()
 	except FileNotFoundError:
-		return
-	input.close()
+		pass
+
 	asyncio.ensure_future(mainloop())
 
 start()
