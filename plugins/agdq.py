@@ -65,7 +65,7 @@ async def automated_gdq():
 
 	now = arrow.utcnow()
 	for i, (tm, gm, ru) in enumerate(schedule[1:]):
-		if (tm - now).seconds < 300 and (tm - now).days < 1:
+		if (tm - now).seconds < 300 and (tm - now).days < 1 and (tm - now).days > 0:
 			time = tm.to('US/Eastern')
 			mes = "```c\nGDQ Up Next: '" + gm + "' Ran By: '" + ru + "' Starting Tentatively: '" + time.format('YYYY-MM-DD HH:mm:ss') + "'```"
 			for item in mesObj:
